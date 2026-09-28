@@ -11,7 +11,8 @@ public class region {
 
     private String regionName;
 
-    public region() {}
+    public region() {
+    }
 
     public Long getRegionId() {
         return regionId;
