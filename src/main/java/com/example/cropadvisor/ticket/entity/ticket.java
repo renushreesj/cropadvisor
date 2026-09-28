@@ -16,26 +16,62 @@ public class ticket {
     private Long farmerId;
     private Long officerId;
 
-    public ticket() {}
+    public ticket() {
+    }
 
-    public Long getTicketId() { return ticketId; }
-    public void setTicketId(Long ticketId) { this.ticketId = ticketId; }
+    public Long getTicketId() {
+        return ticketId;
+    }
 
-    public String getCropName() { return cropName; }
-    public void setCropName(String cropName) { this.cropName = cropName; }
+    public void setTicketId(Long ticketId) {
+        this.ticketId = ticketId;
+    }
 
-    public String getSymptoms() { return symptoms; }
-    public void setSymptoms(String symptoms) { this.symptoms = symptoms; }
+    public String getCropName() {
+        return cropName;
+    }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public void setCropName(String cropName) {
+        this.cropName = cropName;
+    }
 
-    public String getRecommendation() { return recommendation; }
-    public void setRecommendation(String recommendation) { this.recommendation = recommendation; }
+    public String getSymptoms() {
+        return symptoms;
+    }
 
-    public Long getFarmerId() { return farmerId; }
-    public void setFarmerId(Long farmerId) { this.farmerId = farmerId; }
+    public void setSymptoms(String symptoms) {
+        this.symptoms = symptoms;
+    }
 
-    public Long getOfficerId() { return officerId; }
-    public void setOfficerId(Long officerId) { this.officerId = officerId; }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRecommendation() {
+        return recommendation;
+    }
+
+    public void setRecommendation(String recommendation) {
+        this.recommendation = recommendation;
+    }
+
+    public Long getFarmerId() {
+        return farmerId;
+    }
+
+    public void setFarmerId(Long farmerId) {
+        this.farmerId = farmerId;
+    }
+
+    public Long getOfficerId() {
+        return officerId;
+    }
+
+    public void setOfficerId(Long officerId) {
+        this.officerId = officerId;
+    }
 }
