@@ -33,4 +33,4 @@ public class farmerController {
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        service.delete(id);
+        service.delete(id);}}
