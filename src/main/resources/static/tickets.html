@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0">
+
+    <title>CropAdvisor | Tickets</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            🌿
+        </div>
+
+        CropAdvisor
+
+    </div>
+
+
+    <div class="nav-links">
+
+        <a href="index.html">
+            Dashboard
+        </a>
+
+        <a href="farmers.html">
+            Farmers
+        </a>
+
+        <a href="officers.html">
+            Officers
+        </a>
+
+        <a href="regions.html">
+            Regions
+        </a>
+
+        <a href="tickets.html">
+            Tickets
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<main class="container">
+
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <h1>
+            Advisory Tickets
+        </h1>
+
+        <p>
+            Track crop problems, officer recommendations
+            and advisory progress.
+        </p>
+
+    </section>
+
+
+
+    <!-- TICKET STATISTICS -->
+
+    <section class="ticket-stats">
+
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                🎫
+            </div>
+
+            <h3 id="totalTickets">
+                0
+            </h3>
+
+            <p>
+                Total Tickets
+            </p>
+
+        </div>
+
+
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                🟡
+            </div>
+
+            <h3 id="openTickets">
+                0
+            </h3>
+
+            <p>
+                Open
+            </p>
+
+        </div>
+
+
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                🔵
+            </div>
+
+            <h3 id="progressTickets">
+                0
+            </h3>
+
+            <p>
+                In Progress
+            </p>
+
+        </div>
+
+
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                🟢
+            </div>
+
+            <h3 id="resolvedTickets">
+                0
+            </h3>
+
+            <p>
+                Resolved
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- CREATE / UPDATE -->
+
+    <section class="content-section">
+
+
+        <div class="section-title">
+
+            <span id="formTitle">
+                Create Advisory Ticket
+            </span>
+
+        </div>
+
+
+
+        <form id="ticketForm">
+
+
+            <input
+                    type="hidden"
+                    id="ticketId"
+            >
+
+
+            <div class="form-grid">
+
+
+                <!-- CROP -->
+
+                <div class="input-group">
+
+                    <label>
+                        Crop Name
+                    </label>
+
+                    <input
+                            type="text"
+                            id="cropName"
+                            placeholder="Example: Tomato"
+                            required
+                    >
+
+                </div>
+
+
+
+                <!-- STATUS -->
+
+                <div class="input-group">
+
+                    <label>
+                        Status
+                    </label>
+
+                    <select
+                            id="status"
+                            required>
+
+                        <option value="OPEN">
+                            Open
+                        </option>
+
+                        <option value="IN_PROGRESS">
+                            In Progress
+                        </option>
+
+                        <option value="RESOLVED">
+                            Resolved
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- FARMER -->
+
+                <div class="input-group">
+
+                    <label>
+                        Farmer ID
+                    </label>
+
+                    <input
+                            type="number"
+                            id="farmerId"
+                            min="1"
+                            placeholder="Enter farmer ID"
+                            required
+                    >
+
+                </div>
+
+
+
+                <!-- OFFICER -->
+
+                <div class="input-group">
+
+                    <label>
+                        Officer ID
+                    </label>
+
+                    <input
+                            type="number"
+                            id="officerId"
+                            min="1"
+                            placeholder="Enter officer ID"
+                            required
+                    >
+
+                </div>
+
+
+
+                <!-- SYMPTOMS -->
+
+                <div class="input-group textarea-group">
+
+                    <label>
+                        Symptoms
+                    </label>
+
+                    <textarea
+                            id="symptoms"
+                            placeholder="Describe the crop symptoms..."
+                            required>
+                    </textarea>
+
+                </div>
+
+
+
+                <!-- RECOMMENDATION -->
+
+                <div class="input-group textarea-group">
+
+                    <label>
+                        Recommendation
+                    </label>
+
+                    <textarea
+                            id="recommendation"
+                            placeholder="Enter officer recommendation..."
+                            required>
+                    </textarea>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="form-buttons">
+
+
+                <button
+                        type="submit"
+                        class="primary-btn"
+                        id="submitBtn">
+
+                    Create Ticket
+
+                </button>
+
+
+
+                <button
+                        type="button"
+                        class="secondary-btn"
+                        id="cancelBtn"
+                        onclick="cancelEdit()"
+                        style="display:none;">
+
+                    Cancel
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+
+    </section>
+
+
+
+    <!-- TICKET LIST -->
+
+    <section class="content-section">
+
+
+        <div class="list-header">
+
+
+            <div>
+
+                <div
+                        class="section-title"
+                        style="margin-bottom:5px;">
+
+                    Ticket Directory
+
+                </div>
+
+                <p
+                        style="
+                    color:#7b837e;
+                    font-size:13px;
+                    ">
+
+                    View and update crop advisory requests.
+
+                </p>
+
+            </div>
+
+
+
+            <button
+                    class="refresh-btn"
+                    onclick="loadTickets()">
+
+                ↻ Refresh
+
+            </button>
+
+
+        </div>
+
+
+
+        <div class="list-header">
+
+
+            <input
+                    type="text"
+                    id="searchInput"
+                    class="search-box"
+                    placeholder="Search crop or symptoms..."
+                    onkeyup="searchTickets()"
+            >
+
+
+        </div>
+
+
+
+        <div class="table-card">
+
+
+            <table>
+
+
+                <thead>
+
+                <tr>
+
+                    <th>
+                        ID
+                    </th>
+
+                    <th>
+                        Crop
+                    </th>
+
+                    <th>
+                        Symptoms
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Farmer
+                    </th>
+
+                    <th>
+                        Officer
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+
+                <tbody
+                        id="ticketTableBody">
+
+                </tbody>
+
+
+            </table>
+
+
+
+            <div
+                    id="emptyMessage"
+                    class="empty-message"
+                    style="display:none;">
+
+                No advisory tickets found.
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<footer>
+
+    <p>
+        © 2026 CropAdvisor
+    </p>
+
+    <p>
+        Agricultural Advisory Management System
+    </p>
+
+</footer>
+
+
+
+<div
+        id="notification"
+        class="notification"
+        style="display:none;">
+
+</div>
+
+
+
+<script>
+
+    let tickets = [];
+
+
+    // ================= LOAD =================
+
+    async function loadTickets() {
+
+        try {
+
+            const response =
+                await fetch("/tickets");
+
+
+            tickets =
+                await response.json();
+
+
+            displayTickets(tickets);
+
+
+            updateStats();
+
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+
+            showNotification(
+                "Unable to load tickets",
+                "error"
+            );
+
+        }
+
+    }
+
+
+
+    // ================= DISPLAY =================
+
+    function displayTickets(data) {
+
+
+        const table =
+            document.getElementById(
+                "ticketTableBody"
+            );
+
+
+        const empty =
+            document.getElementById(
+                "emptyMessage"
+            );
+
+
+        table.innerHTML = "";
+
+
+        if (data.length === 0) {
+
+            empty.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        empty.style.display =
+            "none";
+
+
+
+        data.forEach(ticket => {
+
+
+            let statusClass =
+                "status-open";
+
+
+            let statusText =
+                "Open";
+
+
+            if (
+                ticket.status ===
+                "IN_PROGRESS"
+            ) {
+
+                statusClass =
+                    "status-progress";
+
+                statusText =
+                    "In Progress";
+
+            }
+
+
+            else if (
+                ticket.status ===
+                "RESOLVED"
+            ) {
+
+                statusClass =
+                    "status-resolved";
+
+                statusText =
+                    "Resolved";
+
+            }
+
+
+
+            const row =
+                document.createElement("tr");
+
+
+
+            row.innerHTML = `
+
+            <td>
+
+                <span class="id-badge">
+
+                    #${ticket.ticketId}
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <strong>
+
+                    ${ticket.cropName}
+
+                </strong>
+
+            </td>
+
+
+            <td>
+
+                <div class="symptom-text">
+
+                    ${ticket.symptoms}
+
+                </div>
+
+            </td>
+
+
+            <td>
+
+                <span
+                    class="ticket-status ${statusClass}">
+
+                    ${statusText}
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="region-badge">
+
+                    Farmer #${ticket.farmerId}
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <span class="region-badge">
+
+                    Officer #${ticket.officerId}
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <button
+                    class="edit-btn"
+                    onclick="editTicket(${ticket.ticketId})">
+
+                    Edit
+
+                </button>
+
+            </td>
+
+        `;
+
+
+            table.appendChild(row);
+
+        });
+
+    }
+
+
+
+    // ================= STATS =================
+
+    function updateStats() {
+
+
+        document.getElementById(
+            "totalTickets"
+        ).textContent =
+            tickets.length;
+
+
+
+        document.getElementById(
+            "openTickets"
+        ).textContent =
+
+            tickets.filter(
+                t => t.status === "OPEN"
+            ).length;
+
+
+
+        document.getElementById(
+            "progressTickets"
+        ).textContent =
+
+            tickets.filter(
+                t => t.status === "IN_PROGRESS"
+            ).length;
+
+
+
+        document.getElementById(
+            "resolvedTickets"
+        ).textContent =
+
+            tickets.filter(
+                t => t.status === "RESOLVED"
+            ).length;
+
+    }
+
+
+
+    // ================= CREATE / UPDATE =================
+
+    document
+        .getElementById("ticketForm")
+        .addEventListener(
+            "submit",
+            async function(event) {
+
+
+                event.preventDefault();
+
+
+
+                const id =
+                    document
+                        .getElementById("ticketId")
+                        .value;
+
+
+
+                const ticket = {
+
+
+                    cropName:
+                        document
+                            .getElementById("cropName")
+                            .value
+                            .trim(),
+
+
+                    symptoms:
+                        document
+                            .getElementById("symptoms")
+                            .value
+                            .trim(),
+
+
+                    status:
+                    document
+                        .getElementById("status")
+                        .value,
+
+
+                    recommendation:
+                        document
+                            .getElementById("recommendation")
+                            .value
+                            .trim(),
+
+
+                    farmerId:
+                        Number(
+                            document
+                                .getElementById("farmerId")
+                                .value
+                        ),
+
+
+                    officerId:
+                        Number(
+                            document
+                                .getElementById("officerId")
+                                .value
+                        )
+
+                };
+
+
+
+                if (!ticket.cropName) {
+
+                    showNotification(
+                        "Enter crop name",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+
+                if (!ticket.symptoms) {
+
+                    showNotification(
+                        "Enter crop symptoms",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+
+                if (!ticket.recommendation) {
+
+                    showNotification(
+                        "Enter recommendation",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+
+                try {
+
+
+                    let response;
+
+
+
+                    // UPDATE
+
+                    if (id) {
+
+
+                        response =
+                            await fetch(
+                                `/tickets/${id}`,
+                                {
+
+                                    method: "PUT",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            "application/json"
+
+                                    },
+
+                                    body:
+                                        JSON.stringify(ticket)
+
+                                }
+                            );
+
+                    }
+
+
+                    // CREATE
+
+                    else {
+
+
+                        response =
+                            await fetch(
+                                "/tickets",
+                                {
+
+                                    method: "POST",
+
+                                    headers: {
+
+                                        "Content-Type":
+                                            "application/json"
+
+                                    },
+
+                                    body:
+                                        JSON.stringify(ticket)
+
+                                }
+                            );
+
+                    }
+
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Request failed"
+                        );
+
+                    }
+
+
+
+                    showNotification(
+
+                        id
+                            ? "Ticket updated successfully"
+                            : "Ticket created successfully"
+
+                    );
+
+
+
+                    resetForm();
+
+                    loadTickets();
+
+
+                }
+
+
+                catch (error) {
+
+
+                    console.error(error);
+
+
+                    showNotification(
+                        "Something went wrong",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+
+    // ================= EDIT =================
+
+    function editTicket(id) {
+
+
+        const ticket =
+            tickets.find(
+                t => t.ticketId === id
+            );
+
+
+        if (!ticket) return;
+
+
+
+        document.getElementById(
+            "ticketId"
+        ).value =
+            ticket.ticketId;
+
+
+
+        document.getElementById(
+            "cropName"
+        ).value =
+            ticket.cropName;
+
+
+
+        document.getElementById(
+            "symptoms"
+        ).value =
+            ticket.symptoms;
+
+
+
+        document.getElementById(
+            "status"
+        ).value =
+            ticket.status;
+
+
+
+        document.getElementById(
+            "recommendation"
+        ).value =
+            ticket.recommendation;
+
+
+
+        document.getElementById(
+            "farmerId"
+        ).value =
+            ticket.farmerId;
+
+
+
+        document.getElementById(
+            "officerId"
+        ).value =
+            ticket.officerId;
+
+
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Update Advisory Ticket";
+
+
+
+        document.getElementById(
+            "submitBtn"
+        ).textContent =
+            "Update Ticket";
+
+
+
+        document.getElementById(
+            "cancelBtn"
+        ).style.display =
+            "inline-block";
+
+
+
+        window.scrollTo({
+
+            top: 250,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+
+
+    // ================= CANCEL =================
+
+    function cancelEdit() {
+
+        resetForm();
+
+    }
+
+
+
+    // ================= RESET =================
+
+    function resetForm() {
+
+
+        document
+            .getElementById("ticketForm")
+            .reset();
+
+
+        document.getElementById(
+            "ticketId"
+        ).value = "";
+
+
+
+        document.getElementById(
+            "formTitle"
+        ).textContent =
+            "Create Advisory Ticket";
+
+
+
+        document.getElementById(
+            "submitBtn"
+        ).textContent =
+            "Create Ticket";
+
+
+
+        document.getElementById(
+            "cancelBtn"
+        ).style.display =
+            "none";
+
+    }
+
+
+
+    // ================= SEARCH =================
+
+    function searchTickets() {
+
+
+        const keyword =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+
+
+        const filtered =
+            tickets.filter(ticket =>
+
+
+                ticket.cropName
+                    .toLowerCase()
+                    .includes(keyword)
+
+
+                ||
+
+
+                ticket.symptoms
+                    .toLowerCase()
+                    .includes(keyword)
+
+
+                ||
+
+
+                ticket.status
+                    .toLowerCase()
+                    .includes(keyword)
+
+            );
+
+
+
+        displayTickets(filtered);
+
+    }
+
+
+
+    // ================= NOTIFICATION =================
+
+    function showNotification(
+        message,
+        type = "success"
+    ) {
+
+
+        const notification =
+            document.getElementById(
+                "notification"
+            );
+
+
+
+        notification.textContent =
+            message;
+
+
+
+        notification.style.display =
+            "block";
+
+
+
+        setTimeout(() => {
+
+            notification.style.display =
+                "none";
+
+        }, 2500);
+
+    }
+
+
+
+    // ================= INITIAL =================
+
+    loadTickets();
+
+</script>
+
+
+</body>
+
+</html>

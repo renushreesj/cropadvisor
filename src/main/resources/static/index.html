@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CropAdvisor | Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        <div class="logo-icon">🌿</div>
+        CropAdvisor
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">Dashboard</a>
+        <a href="farmers.html">Farmers</a>
+        <a href="officers.html">Officers</a>
+        <a href="regions.html">Regions</a>
+        <a href="tickets.html">Tickets</a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <!-- ================= HERO ================= -->
+
+    <section class="hero">
+
+        <div>
+
+            <h1>
+                Smarter Crop<br>
+                Advisory Management.
+            </h1>
+
+            <p>
+                Manage farmers, agricultural officers, regions and
+                crop-related advisory tickets through one simple
+                management system.
+            </p>
+
+            <a href="tickets.html" class="hero-button">
+                View Advisory Tickets →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <section class="page-header">
+
+        <h1>Overview</h1>
+
+        <p>
+            A quick view of your CropAdvisor management system.
+        </p>
+
+    </section>
+
+
+    <section class="stats-grid">
+
+        <!-- FARMERS -->
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                👨‍🌾
+            </div>
+
+            <h3 id="farmerCount">0</h3>
+
+            <p>Registered Farmers</p>
+
+        </div>
+
+
+        <!-- OFFICERS -->
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                👩‍💼
+            </div>
+
+            <h3 id="officerCount">0</h3>
+
+            <p>Agricultural Officers</p>
+
+        </div>
+
+
+        <!-- REGIONS -->
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                📍
+            </div>
+
+            <h3 id="regionCount">0</h3>
+
+            <p>Managed Regions</p>
+
+        </div>
+
+
+        <!-- TICKETS -->
+
+        <div class="single-stat">
+
+            <div class="stat-icon">
+                🎫
+            </div>
+
+            <h3 id="ticketCount">0</h3>
+
+            <p>Advisory Tickets</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= QUICK ACCESS ================= -->
+
+    <section class="page-header">
+
+        <h1>Quick Access</h1>
+
+        <p>
+            Navigate directly to the section you need.
+        </p>
+
+    </section>
+
+
+    <section class="action-grid">
+
+        <!-- FARMERS -->
+
+        <a href="farmers.html" class="action-card">
+
+            <div class="stat-icon">
+                👨‍🌾
+            </div>
+
+            <h3>Farmers</h3>
+
+            <p>
+                Register farmers, update their details
+                and manage farmer information.
+            </p>
+
+        </a>
+
+
+        <!-- OFFICERS -->
+
+        <a href="officers.html" class="action-card">
+
+            <div class="stat-icon">
+                👩‍💼
+            </div>
+
+            <h3>Officers</h3>
+
+            <p>
+                Manage agricultural officers,
+                specializations and assigned regions.
+            </p>
+
+        </a>
+
+
+        <!-- REGIONS -->
+
+        <a href="regions.html" class="action-card">
+
+            <div class="stat-icon">
+                📍
+            </div>
+
+            <h3>Regions</h3>
+
+            <p>
+                Organize and manage agricultural
+                service regions.
+            </p>
+
+        </a>
+
+
+        <!-- TICKETS -->
+
+        <a href="tickets.html" class="action-card">
+
+            <div class="stat-icon">
+                🎫
+            </div>
+
+            <h3>Advisory Tickets</h3>
+
+            <p>
+                Track crop problems, recommendations
+                and ticket status.
+            </p>
+
+        </a>
+
+    </section>
+
+
+    <!-- ================= SYSTEM INFO ================= -->
+
+    <section class="content-section">
+
+        <div class="section-title">
+            How CropAdvisor Works
+        </div>
+
+        <div class="action-grid">
+
+            <div class="action-card">
+
+                <div class="stat-icon">
+                    01
+                </div>
+
+                <h3>Farmer</h3>
+
+                <p>
+                    Farmer information is registered
+                    and connected with a region.
+                </p>
+
+            </div>
+
+
+            <div class="action-card">
+
+                <div class="stat-icon">
+                    02
+                </div>
+
+                <h3>Crop Problem</h3>
+
+                <p>
+                    A crop-related issue is recorded
+                    as an advisory ticket.
+                </p>
+
+            </div>
+
+
+            <div class="action-card">
+
+                <div class="stat-icon">
+                    03
+                </div>
+
+                <h3>Officer</h3>
+
+                <p>
+                    An agricultural officer reviews
+                    the reported crop problem.
+                </p>
+
+            </div>
+
+
+            <div class="action-card">
+
+                <div class="stat-icon">
+                    04
+                </div>
+
+                <h3>Recommendation</h3>
+
+                <p>
+                    The ticket is updated with its
+                    status and advisory recommendation.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026 CropAdvisor
+    </p>
+
+    <p>
+        Agricultural Advisory Management System
+    </p>
+
+</footer>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

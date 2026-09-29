@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CropAdvisor | Regions</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        <div class="logo-icon">🌿</div>
+        CropAdvisor
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">Dashboard</a>
+        <a href="farmers.html">Farmers</a>
+        <a href="officers.html">Officers</a>
+        <a href="regions.html">Regions</a>
+        <a href="tickets.html">Tickets</a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <h1>Regions</h1>
+
+        <p>
+            Manage agricultural service regions and their locations.
+        </p>
+
+    </section>
+
+
+    <!-- STAT -->
+
+    <section class="stats-grid">
+
+        <div class="single-stat">
+
+            <div class="stat-icon">📍</div>
+
+            <h3 id="regionTotal">0</h3>
+
+            <p>Total Regions</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ADD / UPDATE -->
+
+    <section class="content-section">
+
+        <div class="section-title">
+
+            <span id="formTitle">
+                Add New Region
+            </span>
+
+        </div>
+
+
+        <form id="regionForm">
+
+            <input
+                    type="hidden"
+                    id="regionId"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label>Region Name</label>
+
+                    <input
+                            type="text"
+                            id="regionName"
+                            placeholder="Enter region name"
+                            required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-buttons">
+
+                <button
+                        type="submit"
+                        class="primary-btn"
+                        id="submitBtn">
+
+                    Add Region
+
+                </button>
+
+
+                <button
+                        type="button"
+                        class="secondary-btn"
+                        id="cancelBtn"
+                        onclick="cancelEdit()"
+                        style="display:none;">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- REGION LIST -->
+
+    <section class="content-section">
+
+        <div class="list-header">
+
+            <div>
+
+                <div
+                        class="section-title"
+                        style="margin-bottom:5px;">
+
+                    Region Directory
+
+                </div>
+
+                <p
+                        style="color:#7b837e;font-size:13px;">
+
+                    View and update agricultural regions.
+
+                </p>
+
+            </div>
+
+
+            <button
+                    class="refresh-btn"
+                    onclick="loadRegions()">
+
+                ↻ Refresh
+
+            </button>
+
+        </div>
+
+
+        <div class="list-header">
+
+            <input
+                    type="text"
+                    id="searchInput"
+                    class="search-box"
+                    placeholder="Search region..."
+                    onkeyup="searchRegions()"
+            >
+
+        </div>
+
+
+        <div class="table-card">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Region Name</th>
+                    <th>Actions</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody id="regionTableBody">
+                </tbody>
+
+            </table>
+
+
+            <div
+                    id="emptyMessage"
+                    class="empty-message"
+                    style="display:none;">
+
+                No regions found.
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>© 2026 CropAdvisor</p>
+
+    <p>Agricultural Advisory Management System</p>
+
+</footer>
+
+
+<div
+        id="notification"
+        class="notification"
+        style="display:none;">
+</div>
+
+
+<script>
+
+    let regions = [];
+
+
+    // ================= LOAD =================
+
+    async function loadRegions() {
+
+        try {
+
+            const response =
+                await fetch("/regions");
+
+            regions =
+                await response.json();
+
+            displayRegions(regions);
+
+            document.getElementById("regionTotal").textContent =
+                regions.length;
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            showNotification(
+                "Unable to load regions",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    // ================= DISPLAY =================
+
+    function displayRegions(data) {
+
+        const table =
+            document.getElementById("regionTableBody");
+
+        const empty =
+            document.getElementById("emptyMessage");
+
+        table.innerHTML = "";
+
+
+        if (data.length === 0) {
+
+            empty.style.display = "block";
+
+            return;
+
+        }
+
+
+        empty.style.display = "none";
+
+
+        data.forEach(region => {
+
+            const row =
+                document.createElement("tr");
+
+
+            row.innerHTML = `
+
+            <td>
+
+                <span class="id-badge">
+
+                    #${region.regionId}
+
+                </span>
+
+            </td>
+
+
+            <td>
+
+                <strong>
+
+                    ${region.regionName}
+
+                </strong>
+
+            </td>
+
+
+            <td>
+
+                <button
+                    class="edit-btn"
+                    onclick="editRegion(${region.regionId})">
+
+                    Edit
+
+                </button>
+
+            </td>
+
+        `;
+
+
+            table.appendChild(row);
+
+        });
+
+    }
+
+
+    // ================= ADD / UPDATE =================
+
+    document
+        .getElementById("regionForm")
+        .addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const id =
+                    document.getElementById("regionId").value;
+
+
+                const region = {
+
+                    regionName:
+                        document
+                            .getElementById("regionName")
+                            .value
+                            .trim()
+
+                };
+
+
+                if (!region.regionName) {
+
+                    showNotification(
+                        "Enter region name",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                try {
+
+                    let response;
+
+
+                    // UPDATE
+
+                    if (id) {
+
+                        response =
+                            await fetch(
+                                `/regions/${id}`,
+                                {
+
+                                    method: "PUT",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify(region)
+
+                                }
+                            );
+
+                    }
+
+                    // CREATE
+
+                    else {
+
+                        response =
+                            await fetch(
+                                "/regions",
+                                {
+
+                                    method: "POST",
+
+                                    headers: {
+                                        "Content-Type":
+                                            "application/json"
+                                    },
+
+                                    body:
+                                        JSON.stringify(region)
+
+                                }
+                            );
+
+                    }
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Request failed"
+                        );
+
+                    }
+
+
+                    showNotification(
+
+                        id
+                            ? "Region updated successfully"
+                            : "Region added successfully"
+
+                    );
+
+
+                    resetForm();
+
+                    loadRegions();
+
+                }
+
+                catch (error) {
+
+                    console.error(error);
+
+                    showNotification(
+                        "Something went wrong",
+                        "error"
+                    );
+
+                }
+
+            }
+        );
+
+
+    // ================= EDIT =================
+
+    function editRegion(id) {
+
+        const region =
+            regions.find(
+                r => r.regionId === id
+            );
+
+
+        if (!region) return;
+
+
+        document.getElementById("regionId").value =
+            region.regionId;
+
+        document.getElementById("regionName").value =
+            region.regionName;
+
+
+        document.getElementById("formTitle").textContent =
+            "Update Region";
+
+        document.getElementById("submitBtn").textContent =
+            "Update Region";
+
+        document.getElementById("cancelBtn").style.display =
+            "inline-block";
+
+
+        window.scrollTo({
+
+            top: 250,
+
+            behavior: "smooth"
+
+        });
+
+    }
+
+
+    // ================= CANCEL =================
+
+    function cancelEdit() {
+
+        resetForm();
+
+    }
+
+
+    // ================= RESET =================
+
+    function resetForm() {
+
+        document
+            .getElementById("regionForm")
+            .reset();
+
+
+        document.getElementById("regionId").value =
+            "";
+
+
+        document.getElementById("formTitle").textContent =
+            "Add New Region";
+
+        document.getElementById("submitBtn").textContent =
+            "Add Region";
+
+        document.getElementById("cancelBtn").style.display =
+            "none";
+
+    }
+
+
+    // ================= SEARCH =================
+
+    function searchRegions() {
+
+        const keyword =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+
+        const filtered =
+            regions.filter(region =>
+
+                region.regionName
+                    .toLowerCase()
+                    .includes(keyword)
+
+            );
+
+
+        displayRegions(filtered);
+
+    }
+
+
+    // ================= NOTIFICATION =================
+
+    function showNotification(
+        message,
+        type = "success"
+    ) {
+
+        const notification =
+            document.getElementById("notification");
+
+
+        notification.textContent =
+            message;
+
+
+        notification.style.display =
+            "block";
+
+
+        setTimeout(() => {
+
+            notification.style.display =
+                "none";
+
+        }, 2500);
+
+    }
+
+
+    // ================= INITIAL LOAD =================
+
+    loadRegions();
+
+</script>
+
+</body>
+
+</html>

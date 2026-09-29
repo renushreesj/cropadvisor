@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropAdvisor | Farmers</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        <div class="logo-icon">🌿</div>
+        CropAdvisor
+    </div>
+
+    <div class="nav-links">
+        <a href="index.html">Dashboard</a>
+        <a href="farmers.html">Farmers</a>
+        <a href="officers.html">Officers</a>
+        <a href="regions.html">Regions</a>
+        <a href="tickets.html">Tickets</a>
+    </div>
+
+</nav>
+
+
+<main class="container">
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <h1>Farmers</h1>
+
+        <p>
+            Manage registered farmers and their agricultural information.
+        </p>
+
+    </section>
+
+
+    <!-- TOTAL -->
+
+    <section class="stats-grid">
+
+        <div class="single-stat">
+
+            <div class="stat-icon">👨‍🌾</div>
+
+            <h3 id="farmerTotal">0</h3>
+
+            <p>Total Registered Farmers</p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ADD / UPDATE FORM -->
+
+    <section class="content-section">
+
+        <div class="section-title">
+            <span id="formTitle">Add New Farmer</span>
+        </div>
+
+        <form id="farmerForm">
+
+            <input type="hidden" id="farmerId">
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label>Farmer Name</label>
+
+                    <input
+                            type="text"
+                            id="name"
+                            placeholder="Enter farmer name"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Phone Number</label>
+
+                    <input
+                            type="text"
+                            id="phone"
+                            placeholder="Enter 10 digit phone number"
+                            maxlength="10"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Location</label>
+
+                    <input
+                            type="text"
+                            id="location"
+                            placeholder="Enter location"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label>Region ID</label>
+
+                    <input
+                            type="number"
+                            id="regionId"
+                            placeholder="Enter region ID"
+                            min="1"
+                            required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-buttons">
+
+                <button
+                        type="submit"
+                        class="primary-btn"
+                        id="submitBtn">
+                    Add Farmer
+                </button>
+
+                <button
+                        type="button"
+                        class="secondary-btn"
+                        id="cancelBtn"
+                        onclick="cancelEdit()"
+                        style="display:none;">
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- FARMER LIST -->
+
+    <section class="content-section">
+
+        <div class="list-header">
+
+            <div>
+
+                <div class="section-title" style="margin-bottom:5px;">
+                    Farmer Directory
+                </div>
+
+                <p style="color:#7b837e;font-size:13px;">
+                    View and manage all registered farmers.
+                </p>
+
+            </div>
+
+            <button
+                    class="refresh-btn"
+                    onclick="loadFarmers()">
+                ↻ Refresh
+            </button>
+
+        </div>
+
+
+        <div class="list-header">
+
+            <input
+                    type="text"
+                    id="searchInput"
+                    class="search-box"
+                    placeholder="Search farmer..."
+                    onkeyup="searchFarmers()"
+            >
+
+        </div>
+
+
+        <div class="table-card">
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Location</th>
+                    <th>Region</th>
+                    <th>Actions</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody id="farmerTableBody">
+
+                </tbody>
+
+            </table>
+
+            <div
+                    id="emptyMessage"
+                    class="empty-message"
+                    style="display:none;">
+
+                No farmers found.
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>© 2026 CropAdvisor</p>
+
+    <p>Agricultural Advisory Management System</p>
+
+</footer>
+
+
+<div
+        id="notification"
+        class="notification"
+        style="display:none;">
+</div>
+
+
+<script>
+
+    let farmers = [];
+
+
+    // ================= LOAD FARMERS =================
+
+    async function loadFarmers() {
+
+        try {
+
+            const response = await fetch("/farmers");
+
+            farmers = await response.json();
+
+            displayFarmers(farmers);
+
+            document.getElementById("farmerTotal").textContent =
+                farmers.length;
+
+        } catch (error) {
+
+            console.error(error);
+
+            showNotification(
+                "Unable to load farmers",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    // ================= DISPLAY =================
+
+    function displayFarmers(data) {
+
+        const table =
+            document.getElementById("farmerTableBody");
+
+        const empty =
+            document.getElementById("emptyMessage");
+
+        table.innerHTML = "";
+
+        if (data.length === 0) {
+
+            empty.style.display = "block";
+
+            return;
+
+        }
+
+        empty.style.display = "none";
+
+
+        data.forEach(farmer => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+
+            <td>
+                <span class="id-badge">
+                    #${farmer.farmerId}
+                </span>
+            </td>
+
+            <td>
+                <strong>${farmer.name}</strong>
+            </td>
+
+            <td>
+                ${farmer.phone}
+            </td>
+
+            <td>
+                ${farmer.location}
+            </td>
+
+            <td>
+                <span class="region-badge">
+                    Region ${farmer.regionId}
+                </span>
+            </td>
+
+            <td>
+
+                <button
+                    class="edit-btn"
+                    onclick="editFarmer(${farmer.farmerId})">
+                    Edit
+                </button>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteFarmer(${farmer.farmerId})">
+                    Delete
+                </button>
+
+            </td>
+
+        `;
+
+            table.appendChild(row);
+
+        });
+
+    }
+
+
+    // ================= ADD / UPDATE =================
+
+    document
+        .getElementById("farmerForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const id =
+                document.getElementById("farmerId").value;
+
+
+            const farmer = {
+
+                name:
+                    document.getElementById("name").value.trim(),
+
+                phone:
+                    document.getElementById("phone").value.trim(),
+
+                location:
+                    document.getElementById("location").value.trim(),
+
+                regionId:
+                    Number(
+                        document.getElementById("regionId").value
+                    )
+
+            };
+
+
+            if (farmer.name.length < 2) {
+
+                showNotification(
+                    "Enter a valid farmer name",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!/^[0-9]{10}$/.test(farmer.phone)) {
+
+                showNotification(
+                    "Phone number must contain 10 digits",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            if (!farmer.location) {
+
+                showNotification(
+                    "Enter farmer location",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            try {
+
+                let response;
+
+
+                if (id) {
+
+                    response = await fetch(
+                        `/farmers/${id}`,
+                        {
+                            method: "PUT",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify(farmer)
+                        }
+                    );
+
+                } else {
+
+                    response = await fetch(
+                        "/farmers",
+                        {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body: JSON.stringify(farmer)
+                        }
+                    );
+
+                }
+
+
+                if (!response.ok) {
+
+                    throw new Error("Request failed");
+
+                }
+
+
+                showNotification(
+                    id
+                        ? "Farmer updated successfully"
+                        : "Farmer added successfully"
+                );
+
+
+                resetForm();
+
+                loadFarmers();
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                showNotification(
+                    "Something went wrong",
+                    "error"
+                );
+
+            }
+
+        });
+
+
+    // ================= EDIT =================
+
+    function editFarmer(id) {
+
+        const farmer =
+            farmers.find(
+                f => f.farmerId === id
+            );
+
+        if (!farmer) return;
+
+
+        document.getElementById("farmerId").value =
+            farmer.farmerId;
+
+        document.getElementById("name").value =
+            farmer.name;
+
+        document.getElementById("phone").value =
+            farmer.phone;
+
+        document.getElementById("location").value =
+            farmer.location;
+
+        document.getElementById("regionId").value =
+            farmer.regionId;
+
+
+        document.getElementById("formTitle").textContent =
+            "Update Farmer";
+
+        document.getElementById("submitBtn").textContent =
+            "Update Farmer";
+
+        document.getElementById("cancelBtn").style.display =
+            "inline-block";
+
+
+        window.scrollTo({
+            top: 250,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    // ================= CANCEL =================
+
+    function cancelEdit() {
+
+        resetForm();
+
+    }
+
+
+    // ================= RESET =================
+
+    function resetForm() {
+
+        document.getElementById("farmerForm").reset();
+
+        document.getElementById("farmerId").value = "";
+
+        document.getElementById("formTitle").textContent =
+            "Add New Farmer";
+
+        document.getElementById("submitBtn").textContent =
+            "Add Farmer";
+
+        document.getElementById("cancelBtn").style.display =
+            "none";
+
+    }
+
+
+    // ================= DELETE =================
+
+    async function deleteFarmer(id) {
+
+        const confirmDelete =
+            confirm(
+                "Are you sure you want to delete this farmer?"
+            );
+
+        if (!confirmDelete) return;
+
+
+        try {
+
+            const response =
+                await fetch(
+                    `/farmers/${id}`,
+                    {
+                        method: "DELETE"
+                    }
+                );
+
+
+            if (!response.ok) {
+
+                throw new Error("Delete failed");
+
+            }
+
+
+            showNotification(
+                "Farmer deleted successfully"
+            );
+
+            loadFarmers();
+
+
+        } catch (error) {
+
+            console.error(error);
+
+            showNotification(
+                "Unable to delete farmer",
+                "error"
+            );
+
+        }
+
+    }
+
+
+    // ================= SEARCH =================
+
+    function searchFarmers() {
+
+        const keyword =
+            document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
+
+
+        const filtered =
+            farmers.filter(farmer =>
+
+                farmer.name
+                    .toLowerCase()
+                    .includes(keyword)
+
+                ||
+
+                farmer.phone
+                    .toLowerCase()
+                    .includes(keyword)
+
+                ||
+
+                farmer.location
+                    .toLowerCase()
+                    .includes(keyword)
+
+            );
+
+
+        displayFarmers(filtered);
+
+    }
+
+
+    // ================= NOTIFICATION =================
+
+    function showNotification(message, type = "success") {
+
+        const notification =
+            document.getElementById("notification");
+
+        notification.textContent = message;
+
+        notification.style.display = "block";
+
+
+        setTimeout(() => {
+
+            notification.style.display = "none";
+
+        }, 2500);
+
+    }
+
+
+    // ================= INITIAL LOAD =================
+
+    loadFarmers();
+
+</script>
+
+</body>
+
+</html>
